@@ -1,0 +1,145 @@
+<template>  
+	<div>
+		<span on-tap='focusDigit'></span>
+		<span on-tap='focusDigit'></span>
+		<span on-tap='focusDigit'></span>
+		<i>&dash;</i>
+		<span on-tap='focusDigit'></span>
+		<span on-tap='focusDigit'></span>
+		<span on-tap='focusDigit'></span>
+	</div>
+	<input type='number' pattern="[0-9]*"/>
+</template> 
+
+<script $ $$>
+	connectedCallback(){
+		// document.body.addEventListener('keyup',this.input.bind(this));
+		this.$('input').addEventListener('keyup',e=>this.input(e));
+		this.$('input').addEventListener('blur',()=>this.focusDigit(null));
+		// this.$$('span').forEach(item=>{
+		// 	item.addEventListener('click', e=>this.focusDigit(e.target));
+		// });
+		this.reset();   
+	}
+	reset(){
+		this.$$('span').forEach(item=>{
+			item.innerHTML='&#9679;'
+			item.classList.add('empty');
+		});
+	}
+	focus(){
+		this.focusDigit(this.$('span')); 
+	}
+	focusDigit(node,dir){
+		if(!node) return;
+		if(node.target) node = node.target;
+		this.$$('span').forEach(e=>e.classList.remove('focus'));
+		if(!node) return;
+		if(node.tagName=='I') 
+			if(dir=='left') node = node.previousElementSibling;
+			else node = node.nextElementSibling;
+		node.classList.add('focus');
+		this.$('input').focus();
+	}
+	input(event){
+		var node = this.$('.focus');
+		if(!node)return;
+		if(event.key=='ArrowLeft') return this.focusDigit(node.previousElementSibling,'left');
+		if(event.key=='ArrowRight') return this.focusDigit(node.nextElementSibling);
+		if(event.key=='Backspace') {
+			node.innerHTML = '&#9679;'
+			node.classList.add('empty');
+			return this.focusDigit(node.previousElementSibling,'left');
+		}
+		// console.log(event);
+		if(![0,1,2,3,4,5,6,7,8,9].includes(event.key*1)) return;
+		node.innerHTML = event.key;
+		node.classList.remove('empty');
+		this.focusDigit(node.nextElementSibling);
+		this.setAttribute('value',this.getValue());
+		this.value = this.getValue();
+		if(!this.$$('.empty').length) this.complete();
+	}
+	getValue(){
+		return Array.from(this.$$('span')).map(n=>n.innerHTML).join('');
+	}
+	complete(){
+		var code = this.getValue();
+		console.log('CODE',code);
+		this.dispatchEvent( new CustomEvent('complete', { detail: code }) );
+		// var f = this.getAttribute('on-complete');
+		// if(f) eval(f)(code);
+		// setTimeout(()=>eval(this.getAttribute('on-complete'))(code),50);
+	}
+</script>
+
+
+<style>
+	:host{
+		display: inline-block;
+		font-size: 0;
+		overflow: hidden;
+		--box-size: 40px;
+		--font-size: 30px;
+		/*height: 25px;*/
+		/*border: 1px solid red;*/
+	}
+	div{
+		white-space: nowrap;
+		/*width: 100%;*/
+		z-index: 100;
+		/*height:0;*/
+		/*padding-top: 14%;*/
+		/*background: red;*/
+		/*background: #333;*/
+	}
+	span,i{
+		background: #333;
+		color: white;
+		display: inline-block;
+		font-size: var(--font-size);
+		text-align: center;
+		vertical-align: middle;
+		/*width: 14.3%;*/
+		/*height: 14.3%;*/
+		/*margin-top: -14%;*/
+		/*height: 0;*/
+		/*padding-top: 14%;*/
+		/*margin-top: -14%;*/
+		width: var(--box-size);
+		height: var(--box-size);
+		/*height: 100%;*/
+		/*padding: 5px;*/
+	}
+	.empty{
+		color: silver;
+	}
+	.focus{
+		background: #555;
+	}
+	i{
+		color: silver;
+		font-style: normal;
+	}
+/*	input{
+		margin-top: -30px;
+		z-index: -100;
+		background: transparent;
+		color: transparent;
+		border: 2px dotted red;
+		outline: none;
+		visibility: hidden;
+		text-shadow: 0 0 0 gray;
+	}
+*/	
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+	}
+	input{
+		position: absolute; 
+		left: -1000px;
+	}
+	/*input{color:transparent;border:none;outline:none;margin:0;padding:0;text-shadow: 0 0 0 transparent;}*/
+	/*input:focus{outline: none;}*/
+</style>
