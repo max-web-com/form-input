@@ -1,17 +1,9 @@
-<template>  
-	<table><tr>
-		<td on-tap='focusDigit'></td>
-		<td on-tap='focusDigit'></td>
-		<td on-tap='focusDigit'></td>
-		<td dash>&dash;</td>
-		<td on-tap='focusDigit'></td>
-		<td on-tap='focusDigit'></td>
-		<td on-tap='focusDigit'></td>
-	</tr></table>
-	<input type='number' pattern="[0-9]*"/>
-</template> 
-
-<script $ $$ dev>
+document.head.insertAdjacentHTML('beforeend', `<template id="code-input"><style>:host{display:inline-block;font-size:0;overflow:hidden;--box-size:40px;--font-size:30px;border-radius:3px}input{position:absolute;left:-1000px}table{width:100%;border-collapse:collapse}td{background:#333;color:white;font-size:var(--font-size);text-align:center;vertical-align:middle;width:10%}.empty{color:silver}.focus{background:#555}[dash]{color:silver;font-style:normal}</style><table><tr><td on-tap="focusDigit"></td><td on-tap="focusDigit"></td><td on-tap="focusDigit"></td><td dash="">&#x2010;</td><td on-tap="focusDigit"></td><td on-tap="focusDigit"></td><td on-tap="focusDigit"></td></tr></table><input type="number" pattern="[0-9]*"></template>`);
+window.customElements.define('code-input', class extends HTMLElement {
+	constructor() {super();this.attachShadow({mode: 'open'}).appendChild(document.querySelector('template#code-input').content.cloneNode(true));;}
+	$(q){return this.shadowRoot.querySelector(q)}
+	$$(q){return this.shadowRoot.querySelectorAll(q)}
+ 	
 	connectedCallback(){
 		// document.body.addEventListener('keyup',this.input.bind(this));
 		this.$('input').addEventListener('keyup',e=>this.input(e));
@@ -79,85 +71,5 @@
 		// if(f) eval(f)(code);
 		// setTimeout(()=>eval(this.getAttribute('on-complete'))(code),50);
 	}
-</script>
 
-
-<style>
-	:host{
-		/*display: block;*/
-		display: inline-block;
-		font-size: 0;
-		overflow: hidden;
-		--box-size: 40px;
-		--font-size: 30px;
-		/*height: 25px;*/
-		/*border: 1px solid red;*/
-		border-radius: 3px;
-	}
-	input{
-		position: absolute; 
-		left: -1000px;
-	}
-	div{
-		/*white-space: nowrap;*/
-		/*width: 100%;*/
-		/*z-index: 100;*/
-		/*height:0;*/
-		/*padding-top: 14%;*/
-		/*background: red;*/
-		/*background: #333;*/
-	}
-	table{
-		/*margin:0;*/
-		width: 100%;
-		border-collapse: collapse;
-	}
-	td{
-		background: #333;
-		color: white;
-		/*display: inline-block;*/
-		font-size: var(--font-size);
-		text-align: center;
-		vertical-align: middle;
-		width: 10%;
-		/*width: 14.3%;*/
-		/*height: 14.3%;*/
-		/*margin-top: -14%;*/
-		/*height: 0;*/
-		/*padding-top: 14%;*/
-		/*margin-top: -14%;*/
-		/*width: var(--box-size);*/
-		/*height: var(--box-size);*/
-		/*height: 100%;*/
-		/*padding: 5px;*/
-	}
-	.empty{
-		color: silver;
-	}
-	.focus{
-		background: #555;
-	}
-	[dash]{
-		color: silver;
-		font-style: normal;
-	}
-/*	input{
-		margin-top: -30px;
-		z-index: -100;
-		background: transparent;
-		color: transparent;
-		border: 2px dotted red;
-		outline: none;
-		visibility: hidden;
-		text-shadow: 0 0 0 gray;
-	}
-*/
-
-/*	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-	}
-*/	
-	/*input{color:transparent;border:none;outline:none;margin:0;padding:0;text-shadow: 0 0 0 transparent;}*/
-	/*input:focus{outline: none;}*/
-</style>
+});

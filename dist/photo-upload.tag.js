@@ -1,22 +1,9 @@
-<template>
-	<input id="input" type="file"  accept="image/*" hidden>
-	<label for="input">
-		<!-- <div> -->
-			<!-- .jpg,.png -->
-		<svg id='placeholder' viewBox='0 0 100 100' preserveAspectRatio="xMinYMin">
-		  <circle cx="50" cy="35" r="25" />
-		  <ellipse cx="50" cy="100" rx="45" ry="40" />
-		  <!-- <circle cx="50" cy="30" r="30" /> -->
-		  <!-- <ellipse cx="50" cy="100" rx="50" ry="40" /> -->
-		</svg> 
-		<!-- </div> -->
-		<!-- <circle-spinner id='loading' hidden></circle-spinner> -->
-		<img id='photo' hidden/>
-	</label>
-	<span>shit2</span>
-</template>
-
-<script $ dev>
+document.head.insertAdjacentHTML('beforeend', `<template id="photo-upload"><style>:host{--size:200px;--color:#ccc;--background:#fff;display:inline-block;width:var(--size);height:var(--size);background:var(--background)}:host([hidden]){display:none}svg{display:block;width:100%;height:100%;fill:var(--color)}circle-spinner{margin-top:10%;width:80%;height:80%}img{width:100%;height:100%;object-fit:cover}.pulse{animation:pulse 2s linear infinite}@keyframes pulse{from{opacity:.9}50%{opacity:.1}to{opacity:.9}}</style><input id="input" type="file" accept="image/*" hidden><label for="input"><svg id="placeholder" viewbox="0 0 100 100" preserveaspectratio="xMinYMin"><circle cx="50" cy="35" r="25"/><ellipse cx="50" cy="100" rx="45" ry="40"/></svg> <img id="photo" hidden></label><span>shit2</span></template>`);
+window.customElements.define('photo-upload', class extends HTMLElement {
+	constructor() {super();this.attachShadow({mode: 'open'}).appendChild(document.querySelector('template#photo-upload').content.cloneNode(true));;}
+	$(q){return this.shadowRoot.querySelector(q)}
+	
+ 	
 	connectedCallback(){
 		this.input = this.$('input');
 		this.input.addEventListener('change',this.upload.bind(this));
@@ -66,49 +53,5 @@
 			});
 		this.loadImage(this.input.files[0]);
 	}
-</script>
 
-
-<style>
-	:host{
-		--size: 200px; 
-		--color: #ccc;
-		--background: #fff;
-		display: inline-block;
-		width: var(--size);
-		height: var(--size); 
-		background: var(--background);
-	}
-	:host([hidden]){
-		display: none;
-	}
-	svg{
-		display: block;
-		width: 100%;
-		height: 100%;
-		fill: var(--color);
-	}
-	circle-spinner{
-		margin-top:10%;
-		width: 80%;
-		height: 80%;
-		/*--color: : #aaa;*/
-	}
-	img{
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-	.pulse{
-	    animation: pulse 2s linear infinite;
-	}
-	@keyframes pulse {
-	    from {opacity: 0.9;}
-	    50% {opacity: 0.1;} 
-	    to {opacity: 0.9;}
-	}
-
-</style>
-
-
-
+});
