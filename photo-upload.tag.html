@@ -13,10 +13,9 @@
 		<!-- <circle-spinner id='loading' hidden></circle-spinner> -->
 		<img id='photo' hidden/>
 	</label>
-	<span>shit2</span>
 </template>
 
-<script $ dev>
+<script $>
 	connectedCallback(){
 		this.input = this.$('input');
 		this.input.addEventListener('change',this.upload.bind(this));

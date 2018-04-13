@@ -11,7 +11,7 @@
 	<input type='number' pattern="[0-9]*"/>
 </template> 
 
-<script $ $$ dev>
+<script $ $$>
 	connectedCallback(){
 		// document.body.addEventListener('keyup',this.input.bind(this));
 		this.$('input').addEventListener('keyup',e=>this.input(e));
@@ -69,7 +69,7 @@
 	// 	this.setAttribute('value',this.getValue());
 	// }
 	get value(){
-		return Array.from(this.$$('td')).map(n=>n.innerHTML).join('');
+		return Array.from(this.$$('td')).map(n=>n.hasAttribute('dash')?'':n.innerHTML).join('').replace('‐','');
 	}
 	complete(){
 		var code = this.value;
@@ -93,6 +93,7 @@
 		/*height: 25px;*/
 		/*border: 1px solid red;*/
 		border-radius: 3px;
+		user-select: none;
 	}
 	input{
 		position: absolute; 
